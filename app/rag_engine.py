@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import TextLoader
+from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
@@ -10,8 +10,8 @@ embedding_model = HuggingFaceEmbeddings(
 )
 
 # Load and split documents
-def prepare_documents(filepath='app/speech.txt'):
-    loader = TextLoader(filepath)
+def prepare_documents(filepath='pdf'):
+    loader = PyPDFDirectoryLoader(filepath)
     docs = loader.load()
     splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=20)
     return splitter.split_documents(docs)

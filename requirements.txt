@@ -1,0 +1,10 @@
+sentence-transformers
+transformers
+fastapi
+uvicorn
+psutil
+python-dotenv
+langchain
+langchain-community
+ollama
+faiss-cpu

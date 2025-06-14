@@ -8,3 +8,4 @@ langchain
 langchain-community
 ollama
 faiss-cpu
+pypdf

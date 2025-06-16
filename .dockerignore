@@ -1,0 +1,6 @@
+__pycache__/
+.env
+*.log
+*.tar
+venv/
+ollama_models/

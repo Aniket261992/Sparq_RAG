@@ -2,7 +2,7 @@ from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
-import ollama
+from ctransformers import AutoModelForCausalLM
 
 # Use a lightweight local embedding model
 embedding_model = HuggingFaceEmbeddings(
@@ -19,6 +19,13 @@ def prepare_documents(filepath='pdf'):
 # Build or load FAISS vector DB
 def create_vector_store(docs):
     return FAISS.from_documents(docs, embedding_model)
+
+# Load LLM model once
+llm_model = AutoModelForCausalLM.from_pretrained(
+    "./models",                 # Local path inside Docker
+    model_file="TinyLlama-1.1B-Chat.Q4_K_M.gguf",
+    model_type="llama"
+)
 
 # Perform retrieval-augmented search
 def query_rag(vector_db, query: str, k: int = 5):
@@ -37,8 +44,15 @@ def query_rag(vector_db, query: str, k: int = 5):
     combined_context = "\n---\n".join(answer_parts[:3])  # Use top 3 chunks as context
     return combined_context, sources
 
-# Call local LLM using Ollama
-def generate_answer_with_ollama(query: str, context: str, model: str = "mistral"):
-    prompt = f"Answer the question based on the context below:\n\nContext:\n{context}\n\nQuestion:\n{query}\n\nAnswer:"
-    response = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}])
-    return response['message']['content']
+# Perform RAG + local LLM generation
+def generate_answer_with_ollama(query: str, context: str):
+    prompt = f"Answer the question based on the context:\n\n{context}\n\nQuestion: {query}\nAnswer:"
+    return llm_model(prompt)
+
+# Health check
+def check_model_health():
+    try:
+        llm_model("Hello!")  # Dummy call
+        return "Healthy"
+    except:
+        return "Unhealthy"

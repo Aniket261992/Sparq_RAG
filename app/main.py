@@ -6,7 +6,7 @@ import time
 import psutil
 import os
 
-from app.rag_engine import prepare_documents, create_vector_store, query_rag, generate_answer_with_ollama
+from app.rag_engine import prepare_documents, create_vector_store, query_rag, generate_answer_with_ollama, check_model_health
 
 app = FastAPI()
 
@@ -42,7 +42,7 @@ class QueryResponse(BaseModel):
 # --- Endpoints ---
 @app.get("/health")
 def health():
-    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+    return {"status": check_model_health(), "timestamp": datetime.now().isoformat()}
 
 @app.get("/stats")
 def stats():

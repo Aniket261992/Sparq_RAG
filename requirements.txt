@@ -1,11 +1,10 @@
 sentence-transformers
-transformers
+ctransformers
 fastapi
 uvicorn
 psutil
 python-dotenv
 langchain
 langchain-community
-ollama
 faiss-cpu
 pypdf

@@ -6,14 +6,13 @@ import time
 import psutil
 import os
 
-from app.rag_engine import prepare_documents, create_vector_store, query_rag, generate_answer_with_ollama, check_model_health
+from app.rag_engine import prepare_documents, create_vector_store, query_rag, generate_answer_with_ollama, check_model_health,load_vector_store
 
 app = FastAPI()
 
 # Initialize RAG pipeline
 start_time = datetime.now()
-documents = prepare_documents()
-vector_db = create_vector_store(documents)
+vector_db = load_vector_store()
 
 # Metrics
 total_queries = 0

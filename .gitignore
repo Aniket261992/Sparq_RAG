@@ -4,3 +4,4 @@ __pycache__/
 ollama_models/
 *.log
 venv
+tryout.ipynb

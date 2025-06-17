@@ -1,6 +1,7 @@
 __pycache__/
 .env
-*.log
 *.tar
-venv/
 ollama_models/
+*.log
+venv
+tryout.ipynb
